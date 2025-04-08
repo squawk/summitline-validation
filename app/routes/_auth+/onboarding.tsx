@@ -176,7 +176,7 @@ export default function OnboardingRoute({
 						errors={fields.username.errors}
 					/>
 					<Field
-						labelProps={{ htmlFor: fields.name.id, children: 'Name' }}
+						labelProps={{ htmlFor: fields.name.id, children: 'First Name and Last Initial' }}
 						inputProps={{
 							...getInputProps(fields.name, { type: 'text' }),
 							autoComplete: 'name',

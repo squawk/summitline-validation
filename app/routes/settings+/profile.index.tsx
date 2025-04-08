@@ -254,7 +254,7 @@ function UpdateProfile({ loaderData }: { loaderData: Info['loaderData'] }) {
 				/>
 				<Field
 					className="col-span-3"
-					labelProps={{ htmlFor: fields.name.id, children: 'Name' }}
+					labelProps={{ htmlFor: fields.name.id, children: 'First Name and Last Initial' }}
 					inputProps={getInputProps(fields.name, { type: 'text' })}
 					errors={fields.name.errors}
 				/>
