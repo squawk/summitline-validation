@@ -23,7 +23,7 @@ const AssessmentSchema = z.object({
 	notes: z.string().optional(),
 })
 
-type AssessmentData = {
+export type AssessmentData = {
 	id: string
 	skill: string
 	level: 'beginner' | 'intermediate' | 'advanced'
@@ -65,7 +65,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	return {
 		assessments: mockAssessments,
-	}
+	} as const
 }
 
 type AssessmentActionArgs = {
@@ -156,7 +156,7 @@ export default function AssessmentsRoute({ loaderData }: Route.ComponentProps) {
 					<p className="text-muted-foreground">You have no assessments yet.</p>
 				) : (
 					<div className="grid gap-4">
-						{loaderData.assessments.map((assessment) => (
+						{loaderData.assessments.map((assessment: AssessmentData) => (
 							<AssessmentItem key={assessment.id} assessment={assessment} />
 						))}
 					</div>
@@ -225,7 +225,7 @@ function AddAssessment() {
 								children: 'Notes (optional)',
 							}}
 							inputProps={{
-								...getInputProps(fields.notes, { type: 'textarea' }),
+								...getInputProps(fields.notes, { type: 'text' }),
 								className: 'h-24 resize-none',
 							}}
 							errors={fields.notes.errors}

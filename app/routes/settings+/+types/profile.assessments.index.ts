@@ -1,23 +1,19 @@
-import { type $PropertySchemas } from '@remix-run/core/src/routes';
-import { type DataFunctionArgs, type MetaFunction, type SerializeFrom } from '@remix-run/node';
+import { type ActionFunctionArgs } from 'react-router';
 
 export namespace Route {
-    export type LoaderArgs = DataFunctionArgs;
-    export type ActionArgs = DataFunctionArgs;
-    export type MetaFunction = MetaFunction;
+    export type LoaderArgs = ActionFunctionArgs;
+    export type ActionArgs = ActionFunctionArgs;
     export type ComponentProps = {
-        loaderData: SerializeFrom<typeof loader>;
-        actionData?: SerializeFrom<typeof action>;
+        loaderData: any;
+        actionData?: any;
     };
 }
 
 export interface Info {
-    loaderData: SerializeFrom<typeof loader>;
-    actionData?: SerializeFrom<typeof action>;
+    loaderData: any;
+    actionData?: any;
 }
 
-declare module "@remix-run/react" {
-    interface RouteHandles {
-        $PropertySchemas?: $PropertySchemas;
-    }
-}
+// These types are no longer needed since we're using any
+// declare const loader: () => Promise<any>;
+// declare const action: () => Promise<any>;

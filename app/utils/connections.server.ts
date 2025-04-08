@@ -4,12 +4,17 @@ import { GitHubProvider } from './providers/github.server.ts'
 import { type AuthProvider } from './providers/provider.ts'
 import { type Timings } from './timing.server.ts'
 
+// Create a map of available providers
 export const providers: Record<ProviderName, AuthProvider> = {
-	github: new GitHubProvider(),
+	'dummy-provider': new GitHubProvider(), // Using GitHub provider as a placeholder
 }
 
 export function handleMockAction(providerName: ProviderName, request: Request) {
-	return providers[providerName].handleMockAction(request)
+	const provider = providers[providerName];
+	if (!provider) {
+		throw new Error(`Provider ${providerName} not supported`);
+	}
+	return provider.handleMockAction(request);
 }
 
 export function resolveConnectionData(
@@ -17,5 +22,9 @@ export function resolveConnectionData(
 	providerId: string,
 	options?: { timings?: Timings },
 ) {
-	return providers[providerName].resolveConnectionData(providerId, options)
+	const provider = providers[providerName];
+	if (!provider) {
+		throw new Error(`Provider ${providerName} not supported`);
+	}
+	return provider.resolveConnectionData(providerId, options);
 }

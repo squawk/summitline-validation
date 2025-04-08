@@ -4,10 +4,13 @@ import { Icon } from '#app/components/ui/icon.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { useIsPending } from './misc.tsx'
 
-// Empty array since we're removing all providers
-export const providerNames = [] as const
+// Use a non-empty array for the enum to avoid TypeScript errors
+export const providerNames = ['dummy-provider'] as const
 export const ProviderNameSchema = z.enum(providerNames)
 export type ProviderName = z.infer<typeof ProviderNameSchema>
+
+// For backwards compatibility, export a constant that used to be the GitHub provider name
+export const GITHUB_PROVIDER_NAME = 'github'
 
 export const providerLabels: Record<string, string> = {}
 export const providerIcons: Record<string, React.ReactNode> = {}
