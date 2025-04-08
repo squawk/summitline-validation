@@ -15,12 +15,12 @@ import { type Route } from './+types/root.ts'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
-import { EpicProgress } from './components/progress-bar.tsx'
+import { SummitProgress } from './components/progress-bar.tsx'
 import { SearchBar } from './components/search-bar.tsx'
 import { useToast } from './components/toaster.tsx'
 import { Button } from './components/ui/button.tsx'
 import { href as iconsHref } from './components/ui/icon.tsx'
-import { EpicToaster } from './components/ui/sonner.tsx'
+import { SummitToaster } from './components/ui/sonner.tsx'
 import { UserDropdown } from './components/user-dropdown.tsx'
 import {
 	ThemeSwitch,
@@ -63,7 +63,7 @@ export const links: Route.LinksFunction = () => {
 
 export const meta: Route.MetaFunction = ({ data }) => {
 	return [
-		{ title: data ? 'Epic Notes' : 'Error | Epic Notes' },
+		{ title: data ? 'Summit Line Validation' : 'Error | Summit Line Validation' },
 		{ name: 'description', content: `Your own captain's log` },
 	]
 }
@@ -228,8 +228,8 @@ function App() {
 					<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
 				</div>
 			</div>
-			<EpicToaster closeButton position="top-center" theme={theme} />
-			<EpicProgress />
+			<SummitToaster closeButton position="top-center" theme={theme} />
+			<SummitProgress />
 		</OpenImgContextProvider>
 	)
 }
@@ -238,10 +238,10 @@ function Logo() {
 	return (
 		<Link to="/" className="group grid leading-snug">
 			<span className="font-light transition group-hover:-translate-x-1">
-				epic
+				summit line
 			</span>
 			<span className="font-bold transition group-hover:translate-x-1">
-				notes
+				validation
 			</span>
 		</Link>
 	)
