@@ -13,11 +13,9 @@ import {
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { resolveConnectionData } from '#app/utils/connections.server.ts'
 import {
-	ProviderConnectionForm,
 	type ProviderName,
 	ProviderNameSchema,
 	providerIcons,
-	providerNames,
 } from '#app/utils/connections.tsx'
 import { prisma } from '#app/utils/db.server.ts'
 import { pipeHeaders } from '#app/utils/headers.server.js'
@@ -133,14 +131,10 @@ export default function Connections({ loaderData }: Route.ComponentProps) {
 			) : (
 				<p>You don't have any connections yet.</p>
 			)}
-			<div className="border-border mt-5 flex flex-col gap-5 border-t-2 border-b-2 py-3">
-				{providerNames.map((providerName) => (
-					<ProviderConnectionForm
-						key={providerName}
-						type="Connect"
-						providerName={providerName}
-					/>
-				))}
+			<div className="border-border mt-5 py-3 text-center">
+				<p className="text-muted-foreground">
+					External account connections are currently disabled.
+				</p>
 			</div>
 		</div>
 	)

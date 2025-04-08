@@ -4,20 +4,13 @@ import { Icon } from '#app/components/ui/icon.tsx'
 import { StatusButton } from '#app/components/ui/status-button.tsx'
 import { useIsPending } from './misc.tsx'
 
-export const GITHUB_PROVIDER_NAME = 'github'
-// to add another provider, set their name here and add it to the providerNames below
-
-export const providerNames = [GITHUB_PROVIDER_NAME] as const
+// Empty array since we're removing all providers
+export const providerNames = [] as const
 export const ProviderNameSchema = z.enum(providerNames)
 export type ProviderName = z.infer<typeof ProviderNameSchema>
 
-export const providerLabels: Record<ProviderName, string> = {
-	[GITHUB_PROVIDER_NAME]: 'GitHub',
-} as const
-
-export const providerIcons: Record<ProviderName, React.ReactNode> = {
-	[GITHUB_PROVIDER_NAME]: <Icon name="github-logo" />,
-} as const
+export const providerLabels: Record<string, string> = {}
+export const providerIcons: Record<string, React.ReactNode> = {}
 
 export function ProviderConnectionForm({
 	redirectTo,
@@ -26,9 +19,9 @@ export function ProviderConnectionForm({
 }: {
 	redirectTo?: string | null
 	type: 'Connect' | 'Login' | 'Signup'
-	providerName: ProviderName
+	providerName: string
 }) {
-	const label = providerLabels[providerName]
+	const label = providerLabels[providerName] || providerName
 	const formAction = `/auth/${providerName}`
 	const isPending = useIsPending({ formAction })
 	return (
@@ -46,7 +39,7 @@ export function ProviderConnectionForm({
 				status={isPending ? 'pending' : 'idle'}
 			>
 				<span className="inline-flex items-center gap-1.5">
-					{providerIcons[providerName]}
+					{providerIcons[providerName] || null}
 					<span>
 						{type} with {label}
 					</span>

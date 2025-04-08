@@ -164,9 +164,14 @@ export default function EditUserProfile({ loaderData }: Route.ComponentProps) {
 					</Link>
 				</div>
 				<div>
+					<Link to="assessments">
+						<Icon name="file-text">Skill Assessments</Icon>
+					</Link>
+				</div>
+				<div>
 					<Link
 						reloadDocument
-						download="my-epic-notes-data.json"
+						download="my-summit-line-validation-data.json"
 						to="/resources/download-user-data"
 					>
 						<Icon name="download">Download your data</Icon>
