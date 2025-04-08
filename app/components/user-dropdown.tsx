@@ -48,15 +48,15 @@ export function UserDropdown() {
 							</Icon>
 						</Link>
 					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
+					{/* <DropdownMenuItem asChild>
 						<Link prefetch="intent" to={`/users/${user.username}/notes`}>
 							<Icon className="text-body-md" name="pencil-2">
 								Notes
 							</Icon>
 						</Link>
-					</DropdownMenuItem>
+					</DropdownMenuItem> */}
 					<DropdownMenuItem asChild>
-						<Link prefetch="intent" to="/settings/profile/assessments">
+						<Link prefetch="intent" to={`/users/${user.username}/assessments`}>
 							<Icon className="text-body-md" name="file-text">
 								Assessments
 							</Icon>

@@ -64,6 +64,7 @@
     "@react-router/node": "^7.4.0",
     "@react-router/remix-routes-option-adapter": "^7.4.0",
     "@remix-run/server-runtime": "^2.16.2",
+    "@sendgrid/mail": "^8.1.5",
     "@sentry/profiling-node": "9.8.0",
     "@sentry/react-router": "9.8.0",
     "@simplewebauthn/browser": "^13.1.0",

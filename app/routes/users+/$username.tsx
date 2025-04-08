@@ -82,8 +82,8 @@ export default function ProfileRoute() {
 						{isLoggedInUser ? (
 							<>
 								<Button asChild>
-									<Link to="notes" prefetch="intent">
-										My notes
+									<Link to="assessments" prefetch="intent">
+										My assessments
 									</Link>
 								</Button>
 								<Button asChild>

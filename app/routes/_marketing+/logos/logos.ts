@@ -10,7 +10,7 @@ import prisma from './prisma.svg'
 import radixUI from './radix.svg'
 import reactEmail from './react-email.svg'
 import remix from './remix.svg'
-import resend from './resend.svg'
+import sendgrid from './sendgrid.svg'
 import sentry from './sentry.svg'
 import shadcnUI from './shadcn-ui.svg'
 import sqlite from './sqlite.svg'
@@ -66,9 +66,9 @@ export const logos = [
 		row: 4,
 	},
 	{
-		src: resend,
-		alt: 'Resend',
-		href: 'https://resend.com',
+		src: sendgrid,
+		alt: 'SendGrid',
+		href: 'https://sendgrid.com',
 		column: 2,
 		row: 5,
 	},

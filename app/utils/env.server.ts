@@ -10,7 +10,9 @@ const schema = z.object({
 	CACHE_DATABASE_PATH: z.string(),
 	// If you plan on using Sentry, remove the .optional()
 	SENTRY_DSN: z.string().optional(),
-	// If you plan to use Resend, remove the .optional()
+	// If you plan to use SendGrid, remove the .optional()
+	SENDGRID_API_KEY: z.string().optional(),
+	// Keep Resend for backward compatibility
 	RESEND_API_KEY: z.string().optional(),
 	// If you plan to use GitHub auth, remove the .optional()
 	GITHUB_CLIENT_ID: z.string().optional(),
