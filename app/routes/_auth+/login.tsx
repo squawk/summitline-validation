@@ -143,12 +143,12 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
 									errors={fields.remember.errors}
 								/>
 								<div>
-									<Link
+									{/* <Link
 										to="/forgot-password"
 										className="text-body-xs font-semibold"
 									>
 										Forgot password?
-									</Link>
+									</Link> */}
 								</div>
 							</div>
 
@@ -168,13 +168,13 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
 								</StatusButton>
 							</div>
 						</Form>
-						<hr className="my-4" />
+						{/* <hr className="my-4" />
 						<div className="flex flex-col gap-5">
 							<PasskeyLogin
 								redirectTo={redirectTo}
 								remember={fields.remember.value === 'on'}
 							/>
-						</div>
+						</div> */}
 						<div className="flex items-center justify-center gap-2 pt-6">
 							<span className="text-muted-foreground">New here?</span>
 							<Link

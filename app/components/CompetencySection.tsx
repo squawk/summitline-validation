@@ -19,12 +19,12 @@ interface CompetencySectionProps {
 export default function CompetencySection({ competency, supervisor = false, draftAssessment }: CompetencySectionProps) {
 
   return (
-    <div className="competency-section bg-white rounded-lg shadow p-6 mb-8">
+    <div className="competency-section rounded-lg shadow p-6 mb-8">
         <h3 className="text-2xl font-bold">{competency.name}</h3>
       
       <div>
           <div className="mb-8">
-            <p className="text-gray-600">Description: {competency.description}</p>
+            <p>Description: {competency.description}</p>
           </div>
           
           <div className="mt-8">
@@ -32,11 +32,10 @@ export default function CompetencySection({ competency, supervisor = false, draf
             {competency.levels.map((level) => (
               <div key={level.level} className="level-container">
                 <h5>Level {level.level}: {level.title}</h5>
-                <ul className="list-disc list-outside pl-8 space-y-2 text-gray-700 my-2">
+                <ul className="list-disc pl-8 space-y-2 my-2">
                   {level.behaviors.map((behavior, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-700 mt-2 mr-2"></span>
-                      <span>{behavior.description}</span>
+                    <li key={index}>
+                      {behavior.description}
                     </li>
                   ))}
                 </ul>

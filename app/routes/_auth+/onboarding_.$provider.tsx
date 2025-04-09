@@ -27,7 +27,7 @@ import { prisma } from '#app/utils/db.server.ts'
 import { useIsPending } from '#app/utils/misc.tsx'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
-import { NameSchema, UsernameSchema } from '#app/utils/user-validation.ts'
+import { JobTitleSchema, NameSchema, UsernameSchema } from '#app/utils/user-validation.ts'
 import { verifySessionStorage } from '#app/utils/verification.server.ts'
 import { type Route } from './+types/onboarding_.$provider.ts'
 import { onboardingEmailSessionKey } from './onboarding'
@@ -39,6 +39,7 @@ const SignupFormSchema = z.object({
 	imageUrl: z.string().optional(),
 	username: UsernameSchema,
 	name: NameSchema,
+	jobTitle: JobTitleSchema,
 	agreeToTermsOfServiceAndPrivacyPolicy: z.boolean({
 		required_error: 'You must agree to the terms of service and privacy policy',
 	}),
@@ -225,6 +226,14 @@ export default function OnboardingProviderRoute({
 							autoComplete: 'name',
 						}}
 						errors={fields.name.errors}
+					/>
+					<Field
+						labelProps={{ htmlFor: fields.jobTitle.id, children: 'Job Title' }}
+						inputProps={{
+							...getInputProps(fields.jobTitle, { type: 'text' }),
+							autoComplete: 'organization-title',
+						}}
+						errors={fields.jobTitle.errors}
 					/>
 
 					<CheckboxField

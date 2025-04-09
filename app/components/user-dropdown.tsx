@@ -41,13 +41,13 @@ export function UserDropdown() {
 			</DropdownMenuTrigger>
 			<DropdownMenuPortal>
 				<DropdownMenuContent sideOffset={8} align="end">
-					<DropdownMenuItem asChild>
+					{/* <DropdownMenuItem asChild>
 						<Link prefetch="intent" to={`/users/${user.username}`}>
 							<Icon className="text-body-md" name="avatar">
 								Profile
 							</Icon>
 						</Link>
-					</DropdownMenuItem>
+					</DropdownMenuItem> */}
 					{/* <DropdownMenuItem asChild>
 						<Link prefetch="intent" to={`/users/${user.username}/notes`}>
 							<Icon className="text-body-md" name="pencil-2">

@@ -198,7 +198,7 @@ function App() {
 			<div className="flex min-h-screen flex-col justify-between">
 				<header className="container py-6">
 					<nav className="flex flex-wrap items-center justify-between gap-4 sm:flex-nowrap md:gap-8">
-						<Logo />
+						<Logo theme={theme} />
 						<div className="flex items-center gap-10">
 							{user ? (
 								<UserDropdown />
@@ -216,7 +216,8 @@ function App() {
 				</div>
 
 				<div className="container flex justify-between pb-5">
-					<Logo />
+					{/* <Logo theme={theme} /> */}
+					<div />
 					<ThemeSwitch userPreference={data.requestInfo.userPrefs.theme} />
 				</div>
 			</div>
@@ -226,15 +227,24 @@ function App() {
 	)
 }
 
-function Logo() {
+
+function Logo({ theme }: { theme?: Theme }) {
 	return (
 		<Link to="/" className="group grid leading-snug">
-			<span className="font-light transition group-hover:-translate-x-1">
-				summit line
-			</span>
-			<span className="font-bold transition group-hover:translate-x-1">
-				validation
-			</span>
+			<img
+				className="w-44 transition group-hover:translate-x-1"
+				src={
+					theme === 'dark'
+						? 'https://www.summitlineconstruction.com/wp-content/uploads/2022/08/SLC_Logo_Primary_Tagline_Reversed-600x217.png'
+						: 'https://www.summitlineconstruction.com/wp-content/uploads/2023/10/SLC-Black-and-Red-Tagged-Final@2x.png'
+				}
+				alt="Summit Line Learning Institute Logo"
+			/>
+			{/* <img
+				className="w-44 transition group-hover:translate-x-1"
+				src={darkLogo}
+				alt="Summit Line Learning Institute Logo"
+			/> */}
 		</Link>
 	)
 }

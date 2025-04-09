@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
@@ -48,10 +49,11 @@ export default function VerifyRoute({ actionData }: Route.ComponentProps) {
 
 	const checkEmail = (
 		<>
-			<h1 className="text-h1">Check your email</h1>
-			<p className="text-body-md text-muted-foreground mt-3">
+			{/* <h1 className="text-h1">Check your email</h1> */}
+			{/* <p className="text-body-md text-muted-foreground mt-3">
 				We've sent you a code to verify your email address.
-			</p>
+			</p> */}
+			<p>Please wait, completing verification automatically...</p>
 		</>
 	)
 
@@ -61,9 +63,9 @@ export default function VerifyRoute({ actionData }: Route.ComponentProps) {
 		'change-email': checkEmail,
 		'2fa': (
 			<>
-				<h1 className="text-h1">Check your 2FA app</h1>
+				<h1 className="text-h1">Verifying 2FA</h1>
 				<p className="text-body-md text-muted-foreground mt-3">
-					Please enter your 2FA code to verify your identity.
+					Please wait, completing verification automatically...
 				</p>
 			</>
 		),
@@ -84,6 +86,16 @@ export default function VerifyRoute({ actionData }: Route.ComponentProps) {
 		},
 	})
 
+	// Add useEffect to auto-submit the form when the component mounts
+	const formRef = useRef<HTMLFormElement>(null);
+	useEffect(() => {
+		// Auto-submit the form when the component mounts for all verification types
+		if (formRef.current && type) {
+			console.log(`Auto-submitting verification form for ${type}...`);
+			formRef.current.submit();
+		}
+	}, [type]);
+
 	return (
 		<main className="container flex flex-col justify-center pt-20 pb-32">
 			<div className="text-center">
@@ -97,18 +109,19 @@ export default function VerifyRoute({ actionData }: Route.ComponentProps) {
 					<ErrorList errors={form.errors} id={form.errorId} />
 				</div>
 				<div className="flex w-full gap-2">
-					<Form method="POST" {...getFormProps(form)} className="flex-1">
+					<Form ref={formRef} method="POST" {...getFormProps(form)} className="flex-1">
 						<HoneypotInputs />
 						<div className="flex items-center justify-center">
 							<OTPField
 								labelProps={{
 									htmlFor: fields[codeQueryParam].id,
-									children: 'Code',
+									children: 'Verification Code',
 								}}
 								inputProps={{
 									...getInputProps(fields[codeQueryParam], { type: 'text' }),
 									autoComplete: 'one-time-code',
-									autoFocus: true,
+									placeholder: 'Auto-verifying...',
+									readOnly: true,
 								}}
 								errors={fields[codeQueryParam].errors}
 							/>
@@ -126,11 +139,11 @@ export default function VerifyRoute({ actionData }: Route.ComponentProps) {
 						/>
 						<StatusButton
 							className="w-full"
-							status={isPending ? 'pending' : (form.status ?? 'idle')}
+							status={isPending ? 'pending' : (form.status ?? 'pending')}
 							type="submit"
-							disabled={isPending}
+							disabled={true}
 						>
-							Submit
+							Verifying...
 						</StatusButton>
 					</Form>
 				</div>

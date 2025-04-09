@@ -27,6 +27,11 @@ export const NameSchema = z
 	.min(3, { message: 'Name is too short' })
 	.max(40, { message: 'Name is too long' })
 
+export const JobTitleSchema = z
+	.string({ required_error: 'Job Title is required' })
+	.min(2, { message: 'Job Title is too short' })
+	.max(100, { message: 'Job Title is too long' })
+
 export const EmailSchema = z
 	.string({ required_error: 'Email is required' })
 	.email({ message: 'Email is invalid' })

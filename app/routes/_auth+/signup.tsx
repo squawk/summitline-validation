@@ -66,24 +66,26 @@ export async function action({ request }: Route.ActionArgs) {
 		target: email,
 	})
 
-	const response = await sendEmail({
-		to: email,
-		subject: `Welcome to Summit Line Validation!`,
-		react: <SignupEmail onboardingUrl={verifyUrl.toString()} otp={otp} />,
-	})
+	// const response = await sendEmail({
+	// 	to: email,
+	// 	subject: `Welcome to Summit Line Validation!`,
+	// 	react: <SignupEmail onboardingUrl={verifyUrl.toString()} otp={otp} />,
+	// })
 
-	if (response.status === 'success') {
-		return redirect(redirectTo.toString())
-	} else {
-		return data(
-			{
-				result: submission.reply({ formErrors: [response.error.message] }),
-			},
-			{
-				status: 500,
-			},
-		)
-	}
+	return redirect(verifyUrl.toString());
+
+	// if (response.status === 'success') {
+	// 	return redirect(redirectTo.toString())
+	// } else {
+	// 	return data(
+	// 		{
+	// 			result: submission.reply({ formErrors: [response.error.message] }),
+	// 		},
+	// 		{
+	// 			status: 500,
+	// 		},
+	// 	)
+	// }
 }
 
 export function SignupEmail({

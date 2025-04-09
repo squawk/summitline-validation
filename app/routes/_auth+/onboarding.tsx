@@ -19,6 +19,7 @@ import { useIsPending } from '#app/utils/misc.tsx'
 import { authSessionStorage } from '#app/utils/session.server.ts'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
 import {
+	JobTitleSchema,
 	NameSchema,
 	PasswordAndConfirmPasswordSchema,
 	UsernameSchema,
@@ -32,10 +33,11 @@ const SignupFormSchema = z
 	.object({
 		username: UsernameSchema,
 		name: NameSchema,
-		agreeToTermsOfServiceAndPrivacyPolicy: z.boolean({
-			required_error:
-				'You must agree to the terms of service and privacy policy',
-		}),
+		jobTitle: JobTitleSchema,
+		// agreeToTermsOfServiceAndPrivacyPolicy: z.boolean({
+		// 	required_error:
+		// 		'You must agree to the terms of service and privacy policy',
+		// }),
 		remember: z.boolean().optional(),
 		redirectTo: z.string().optional(),
 	})
@@ -184,6 +186,14 @@ export default function OnboardingRoute({
 						errors={fields.name.errors}
 					/>
 					<Field
+						labelProps={{ htmlFor: fields.jobTitle.id, children: 'Job Title' }}
+						inputProps={{
+							...getInputProps(fields.jobTitle, { type: 'text' }),
+							autoComplete: 'organization-title',
+						}}
+						errors={fields.jobTitle.errors}
+					/>
+					<Field
 						labelProps={{ htmlFor: fields.password.id, children: 'Password' }}
 						inputProps={{
 							...getInputProps(fields.password, { type: 'password' }),
@@ -204,7 +214,7 @@ export default function OnboardingRoute({
 						errors={fields.confirmPassword.errors}
 					/>
 
-					<CheckboxField
+					{/* <CheckboxField
 						labelProps={{
 							htmlFor: fields.agreeToTermsOfServiceAndPrivacyPolicy.id,
 							children:
@@ -215,7 +225,7 @@ export default function OnboardingRoute({
 							{ type: 'checkbox' },
 						)}
 						errors={fields.agreeToTermsOfServiceAndPrivacyPolicy.errors}
-					/>
+					/> */}
 					<CheckboxField
 						labelProps={{
 							htmlFor: fields.remember.id,

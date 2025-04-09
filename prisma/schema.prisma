@@ -13,6 +13,7 @@ model User {
   email       String       @unique
   username    String       @unique
   name        String?
+  jobTitle    String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   assessments Assessment[]
@@ -208,6 +209,7 @@ model SupervisorRating {
   id                String     @id @default(uuid())
   assessmentId      String     @map("assessment_id")
   competencyId      String     @map("competency_id")
+  criticality       Int
   currentLevel      Int        @map("current_level")
   expectedLevel     Int        @map("expected_level")
   developmentNeeded Int        @map("development_needed")

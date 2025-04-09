@@ -1,5 +1,4 @@
 // File: app/routes/users+/$username_+/assessments.index.tsx
-import crypto from "crypto";
 import { type Competency, type CompetencyLevel, type Behavior } from "@prisma/client";
 import { redirect, Form, useActionData, useLoaderData, useNavigation } from "react-router"; 
 import { toast } from "sonner";
@@ -74,23 +73,22 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
   );
 
   return (
-    <div className="competency-section bg-white rounded-lg shadow p-6 mb-8">
+    <div className="competency-section rounded-lg shadow p-6 mb-8">
       <h3 className="text-2xl font-bold">{competency.name}</h3>
       
       <div>
         <div className="mb-8">
-          <p className="text-gray-600">Description: {competency.description}</p>
+          <p>Description: {competency.description}</p>
         </div>
         
         <div className="mt-8">
           {competency.levels.map((level: CompetencyLevel & { behaviors: Behavior[] }) => (
             <div key={level.level} className="level-container">
               <h5>Level {level.level}: {level.title}</h5>
-              <ul className="list-disc list-outside pl-8 space-y-2 text-gray-700 my-2">
+              <ul className="list-disc pl-8 space-y-2 my-2">
                 {level.behaviors.map((behavior: Behavior, index: number) => (
-                  <li key={index} className="flex items-start">
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-700 mt-2 mr-2"></span>
-                    <span>{behavior.description}</span>
+                  <li key={index}>
+                    {behavior.description}
                   </li>
                 ))}
               </ul>
@@ -248,7 +246,7 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
           <textarea
             id={`comments-${competency.id}`}
             name={`comments-${competency.id}`}
-            className="w-full border border-gray-300 p-3"
+            className="block w-full rounded-md px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300  focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             defaultValue={rating?.comments || ''}
           ></textarea>
 
@@ -264,7 +262,7 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
                 or comparable behaviors at that level.
               </p>
               <p className="mb-6">Please provide an overall rating of your direct reports as they relate to the competency, behaviors, and proficiency levels listed above.</p>
-              <table className="w-full border-collapse border border-gray-400">
+              <table className="w-full border-collapse border rounded-md border-gray-400">
                 <tbody>
                   <tr>
                     <th className="border border-gray-300"></th>
@@ -275,6 +273,35 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
                     <th className="border border-gray-300">4</th>
                     <th className="border border-gray-300">5</th>
                     <th className="border border-gray-300"></th>
+                  </tr>
+
+                  <tr>
+                    <td className="border border-gray-300 p-3">
+                    Overall, how <strong>critical</strong> is this competency to your employee’s role as a Summit Safety Professional?
+                    </td>
+                    <td className="align-right border border-gray-300 p-3 font-bold">
+                      Not Critical
+                    </td>
+                    {[1, 2, 3, 4, 5].map((num) => (
+                      <td
+                        key={num}
+                        className="border border-gray-300 p-3 text-center cursor-pointer"
+                        onClick={() => {
+                          document.getElementById(`supervisor-criticality-${competency.id}-${num}`)?.click();
+                        }}
+                      >
+                        <input
+                          type="radio"
+                          id={`supervisor-criticality-${competency.id}-${num}`}
+                          name={`supervisor-criticality-${competency.id}`}
+                          value={num}
+                          defaultChecked={supervisorRating?.criticality === num}
+                        />
+                      </td>
+                    ))}
+                    <td className="align-right border border-gray-300 p-3 font-bold">
+                      Extremely Critical
+                    </td>
                   </tr>
 
                   <tr>
@@ -373,7 +400,7 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
               <textarea
                 id={`supervisor-comments-${competency.id}`}
                 name={`supervisor-comments-${competency.id}`}
-                className="w-full border border-gray-300 p-3"
+                className="block w-full rounded-md px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 defaultValue={supervisorRating?.comments || ''}
               ></textarea>
             </>
@@ -384,10 +411,26 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
   );
 };
 
-export async function loader({ request, params }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const userId = await requireUserId(request);
   
   try {
+    // Find draft assessment for this user
+    const draftAssessment = await prisma.assessment.findFirst({
+      where: {
+        userId
+      },
+      include: {
+        ratings: true,
+        supervisorRatings: true,
+      },
+    });
+
+    // if assessment complete, redirect to completed page
+    if (draftAssessment?.status === 'COMPLETED') {
+      // return redirect(`/users/${userId}/assessments/completed`);
+    }
+    
     // Get competencies with levels and behaviors
     const competencies = await prisma.competency.findMany({
       include: {
@@ -399,19 +442,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
       },
     });
 
-    console.log(' Competencies:', competencies);
-    
-    // Find draft assessment for this user
-    const draftAssessment = await prisma.assessment.findFirst({
-      where: {
-        userId,
-        completedAt: null,
-      },
-      include: {
-        ratings: true,
-        supervisorRatings: true,
-      },
-    });
     
     return { competencies, draftAssessment, userId };
   } catch (error) {
@@ -432,6 +462,7 @@ export async function action({ request, params }: Route.ActionArgs) {
   try {
     // Get or create assessment
     const assessmentId = formData.get('assessmentId') as string | null;
+    console.log('Assessment ID:', assessmentId);
     const now = new Date();
     
     let assessment;
@@ -494,6 +525,7 @@ export async function action({ request, params }: Route.ActionArgs) {
       }
       
       // Process supervisor ratings
+      const supervisorCriticality = parseInt(formData.get(`supervisor-criticality-${competencyId}`) as string || '0');
       const supervisorCurrentLevel = parseInt(formData.get(`supervisor-current-${competencyId}`) as string || '0');
       const supervisorExpectedLevel = parseInt(formData.get(`supervisor-expected-${competencyId}`) as string || '0');
       const supervisorDevelopmentNeeded = parseInt(formData.get(`supervisor-development-${competencyId}`) as string || '0');
@@ -508,6 +540,7 @@ export async function action({ request, params }: Route.ActionArgs) {
             }
           },
           update: {
+            criticality: supervisorCriticality,
             currentLevel: supervisorCurrentLevel,
             expectedLevel: supervisorExpectedLevel,
             developmentNeeded: supervisorDevelopmentNeeded,
@@ -516,6 +549,7 @@ export async function action({ request, params }: Route.ActionArgs) {
           create: {
             assessmentId: assessment.id,
             competencyId,
+            criticality: supervisorCriticality,
             currentLevel: supervisorCurrentLevel,
             expectedLevel: supervisorExpectedLevel,
             developmentNeeded: supervisorDevelopmentNeeded,
@@ -525,7 +559,7 @@ export async function action({ request, params }: Route.ActionArgs) {
       }
     }
     
-    return redirect(`/users/${params.username}/assessments`);
+    return redirect(`/users/${params.username}/assessments/completed`);
   } catch (error) {
     console.error('Error saving assessment:', error);
     return { 
@@ -554,7 +588,7 @@ export default function Assessment() {
     <div className="container my-8">
       <h2 className="text-4xl font-bold">Safety Functional Competency Assessment</h2>
       
-      <div className="mt-6 p-4 bg-gray-50 rounded-md">
+      <div className="mt-6 p-4 rounded-md">
         <p>
           Read through each of the behaviors below with the associated proficiency level for each competency. 
           The levels of proficiency are progressive. If you are performing at a "level 3" it is assumed 
