@@ -84,7 +84,7 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
         <div className="mt-8">
           {competency.levels.map((level: CompetencyLevel & { behaviors: Behavior[] }) => (
             <div key={level.level} className="level-container">
-              <h5>Level {level.level}: {level.title}</h5>
+              <h5 className="font-bold">Level {level.level}: {level.title}</h5>
               <ul className="list-disc pl-8 space-y-2 my-2">
                 {level.behaviors.map((behavior: Behavior, index: number) => (
                   <li key={index}>
@@ -252,6 +252,7 @@ const CompetencySection = ({ competency, supervisor = false, draftAssessment }: 
 
           {supervisor && (
             <>
+            <h4 className="text-lg font-bold">Supervisor Ratings:</h4>
               <p className="my-6">
                 Read through each of the behaviors below with the associated
                 proficiency level for each competency. The levels of proficiency
